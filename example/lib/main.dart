@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:flutter/material.dart';
 
 void main() => runApp(ContactsExampleApp());
 
@@ -56,6 +56,7 @@ class _ContactListPageState extends State<ContactListPage> {
                           builder: (BuildContext context) =>
                               ContactDetailsPage(c)));
                     },
+                    onLongPress: () { ContactsService.showContact(c); },
                     leading: (c.avatar != null && c.avatar.length > 0)
                         ? CircleAvatar(backgroundImage: MemoryImage(c.avatar))
                         : CircleAvatar(
@@ -74,6 +75,7 @@ class _ContactListPageState extends State<ContactListPage> {
 
 class ContactDetailsPage extends StatelessWidget {
   ContactDetailsPage(this._contact);
+
   final Contact _contact;
 
   @override
@@ -119,6 +121,7 @@ class ContactDetailsPage extends StatelessWidget {
 
 class AddressesTile extends StatelessWidget {
   AddressesTile(this._addresses);
+
   final Iterable<PostalAddress> _addresses;
 
   Widget build(BuildContext context) {
@@ -156,6 +159,7 @@ class AddressesTile extends StatelessWidget {
 
 class ItemsTile extends StatelessWidget {
   ItemsTile(this._title, this._items);
+
   final Iterable<Item> _items;
   final String _title;
 

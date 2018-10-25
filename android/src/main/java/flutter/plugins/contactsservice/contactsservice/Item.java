@@ -2,35 +2,36 @@ package flutter.plugins.contactsservice.contactsservice;
 
 import android.database.Cursor;
 import android.provider.ContactsContract;
-import static android.provider.ContactsContract.CommonDataKinds;
 
 import java.util.HashMap;
+
+import static android.provider.ContactsContract.CommonDataKinds;
 
 /***
  * Represents an object which has a label and a value
  * such as an email or a phone
  ***/
-public class Item{
+class Item {
 
-    public String label, value;
+    String label, value;
 
-    public Item(String label, String value) {
+    Item(String label, String value) {
         this.label = label;
         this.value = value;
     }
 
-    HashMap<String, String> toMap(){
-        HashMap<String,String> result = new HashMap<>();
-        result.put("label",label);
-        result.put("value",value);
+    HashMap<String, String> toMap() {
+        HashMap<String, String> result = new HashMap<>();
+        result.put("label", label);
+        result.put("value", value);
         return result;
     }
 
-    public static Item fromMap(HashMap<String,String> map){
+    static Item fromMap(HashMap<String, String> map) {
         return new Item(map.get("label"), map.get("value"));
     }
 
-    public static String getPhoneLabel(int type){
+    static String getPhoneLabel(int type) {
         switch (type) {
             case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
                 return "home";
@@ -43,7 +44,7 @@ public class Item{
         }
     }
 
-    public static String getEmailLabel(int type, Cursor cursor) {
+    static String getEmailLabel(int type, Cursor cursor) {
         switch (type) {
             case CommonDataKinds.Email.TYPE_HOME:
                 return "home";
@@ -60,25 +61,33 @@ public class Item{
         }
     }
 
-    public static int stringToPhoneType(String label) {
+    static int stringToPhoneType(String label) {
         if (label != null) {
             switch (label) {
-                case "home": return CommonDataKinds.Phone.TYPE_HOME;
-                case "work": return CommonDataKinds.Phone.TYPE_WORK;
-                case "mobile": return CommonDataKinds.Phone.TYPE_MOBILE;
-                default: return CommonDataKinds.Phone.TYPE_OTHER;
+                case "home":
+                    return CommonDataKinds.Phone.TYPE_HOME;
+                case "work":
+                    return CommonDataKinds.Phone.TYPE_WORK;
+                case "mobile":
+                    return CommonDataKinds.Phone.TYPE_MOBILE;
+                default:
+                    return CommonDataKinds.Phone.TYPE_OTHER;
             }
         }
         return CommonDataKinds.Phone.TYPE_OTHER;
     }
 
-    public static int stringToEmailType(String label) {
+    static int stringToEmailType(String label) {
         if (label != null) {
             switch (label) {
-                case "home": return CommonDataKinds.Email.TYPE_HOME;
-                case "work": return CommonDataKinds.Email.TYPE_WORK;
-                case "mobile": return CommonDataKinds.Email.TYPE_MOBILE;
-                default: return CommonDataKinds.Email.TYPE_OTHER;
+                case "home":
+                    return CommonDataKinds.Email.TYPE_HOME;
+                case "work":
+                    return CommonDataKinds.Email.TYPE_WORK;
+                case "mobile":
+                    return CommonDataKinds.Email.TYPE_MOBILE;
+                default:
+                    return CommonDataKinds.Email.TYPE_OTHER;
             }
         }
         return CommonDataKinds.Email.TYPE_OTHER;

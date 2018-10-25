@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 import Contacts
+import ContactsUI
 
 @available(iOS 9.0, *)
 public class SwiftContactsServicePlugin: NSObject, FlutterPlugin {
@@ -26,6 +27,13 @@ public class SwiftContactsServicePlugin: NSObject, FlutterPlugin {
             }
         case "deleteContact":
             if(deleteContact(dictionary: call.arguments as! [String : Any])){
+                result(nil)
+            }
+            else{
+                result(FlutterError(code: "", message: "Failed to delete contact, make sure it has a valid identifier", details: nil))
+            }
+        case "showContact":
+            if(showContact(dictionary: call.arguments as! [String : Any])){
                 result(nil)
             }
             else{
@@ -106,6 +114,31 @@ public class SwiftContactsServicePlugin: NSObject, FlutterPlugin {
             return false;
         }
         return true;
+    }
+    
+    func showContact(dictionary : [String:Any])   -> Bool{
+        guard let identifier = dictionary["identifier"] as? String else{
+            return false;
+        }
+        let store = CNContactStore()
+        let keys: [CNKeyDescriptor] = [CNContactIdentifierKey as NSString, CNContactGivenNameKey as NSString, CNContactFamilyNameKey as NSString, CNContactPhoneNumbersKey as NSString, CNContactImageDataAvailableKey as NSString, CNContactImageDataKey as NSString, CNContactViewController.descriptorForRequiredKeys()]
+        do{
+            if let contact = try store.unifiedContact(withIdentifier: identifier, keysToFetch: keys).mutableCopy() as? CNMutableContact{
+                let contactViewController = CNContactViewController(forNewContact: contact)
+                contactViewController.allowsEditing = false
+                contactViewController.allowsActions = false
+                let navigationController = UINavigationController(rootViewController: contactViewController)
+
+                UIApplication.shared.keyWindow?.rootViewController?.present(navigationController, animated: false, completion: nil)
+            }
+        }
+        catch{
+            print(error.localizedDescription)
+            return false;
+        }
+        return true;
+        
+       
     }
     
     func dictionaryToContact(dictionary : [String:Any]) -> CNMutableContact{

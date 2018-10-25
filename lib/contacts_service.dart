@@ -21,6 +21,9 @@ class ContactsService {
   /// Deletes the [contact] if it has a valid identifier
   static Future deleteContact(Contact contact) =>
       _channel.invokeMethod('deleteContact', Contact._toMap(contact));
+
+  static Future showContact(Contact contact) =>
+      _channel.invokeMethod('showContact', Contact._toMap(contact));
 }
 
 class Contact {

@@ -4,14 +4,14 @@ PODS:
   - Flutter (1.0.0)
 
 DEPENDENCIES:
-  - contacts_service (from `/Users/timsneath/git/flutter_contacts/ios`)
-  - Flutter (from `/Users/timsneath/flutter/bin/cache/artifacts/engine/ios`)
+  - contacts_service (from `/Users/shorny/Data/Work/Infinitemate/project-flutter/flutter_contacts/ios`)
+  - Flutter (from `/Users/shorny/sdk/flutter/bin/cache/artifacts/engine/ios`)
 
 EXTERNAL SOURCES:
   contacts_service:
-    :path: "/Users/timsneath/git/flutter_contacts/ios"
+    :path: "/Users/shorny/Data/Work/Infinitemate/project-flutter/flutter_contacts/ios"
   Flutter:
-    :path: "/Users/timsneath/flutter/bin/cache/artifacts/engine/ios"
+    :path: "/Users/shorny/sdk/flutter/bin/cache/artifacts/engine/ios"
 
 SPEC CHECKSUMS:
   contacts_service: 3d584b5457e56df4e68608a765b0dfc88b80479c

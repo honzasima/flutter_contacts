@@ -4,17 +4,17 @@ import android.annotation.TargetApi;
 import android.database.Cursor;
 import android.os.Build;
 
+import java.util.HashMap;
+
 import static android.provider.ContactsContract.CommonDataKinds;
 import static android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
 
-import java.util.HashMap;
-
 @TargetApi(Build.VERSION_CODES.ECLAIR)
-public class PostalAddress {
+class PostalAddress {
 
-    HashMap<String,String> map = new HashMap<>();
+    HashMap<String, String> map = new HashMap<>();
 
-    PostalAddress(Cursor cursor){
+    PostalAddress(Cursor cursor) {
         map.put("label", getLabel(cursor));
         map.put("street", cursor.getString(cursor.getColumnIndex(StructuredPostal.STREET)));
         map.put("city", cursor.getString(cursor.getColumnIndex(StructuredPostal.CITY)));
@@ -23,7 +23,8 @@ public class PostalAddress {
         map.put("country", cursor.getString(cursor.getColumnIndex(StructuredPostal.COUNTRY)));
     }
 
-    private PostalAddress(){}
+    private PostalAddress() {
+    }
 
     String label = map.get("label");
     String street = map.get("street");
@@ -45,18 +46,21 @@ public class PostalAddress {
         return "other";
     }
 
-    public static PostalAddress fromMap(HashMap<String,String> postalAddress) {
+    static PostalAddress fromMap(HashMap<String, String> postalAddress) {
         PostalAddress address = new PostalAddress();
         address.map = postalAddress;
         return address;
     }
 
-    public static int stringToPostalAddressType(String label) {
-        if(label != null) {
+    static int stringToPostalAddressType(String label) {
+        if (label != null) {
             switch (label) {
-                case "home": return CommonDataKinds.StructuredPostal.TYPE_HOME;
-                case "work": return CommonDataKinds.StructuredPostal.TYPE_WORK;
-                default: return CommonDataKinds.StructuredPostal.TYPE_OTHER;
+                case "home":
+                    return CommonDataKinds.StructuredPostal.TYPE_HOME;
+                case "work":
+                    return CommonDataKinds.StructuredPostal.TYPE_WORK;
+                default:
+                    return CommonDataKinds.StructuredPostal.TYPE_OTHER;
             }
         }
         return StructuredPostal.TYPE_OTHER;
