@@ -314,6 +314,7 @@ public class ContactsServicePlugin implements MethodCallHandler {
 
     private void showContact(Contact contact) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI,
                 String.valueOf(contact.identifier));
         intent.setData(uri);
