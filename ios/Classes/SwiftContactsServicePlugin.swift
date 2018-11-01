@@ -124,7 +124,7 @@ public class SwiftContactsServicePlugin: NSObject, FlutterPlugin {
         let keys: [CNKeyDescriptor] = [CNContactIdentifierKey as NSString, CNContactGivenNameKey as NSString, CNContactFamilyNameKey as NSString, CNContactPhoneNumbersKey as NSString, CNContactImageDataAvailableKey as NSString, CNContactImageDataKey as NSString, CNContactViewController.descriptorForRequiredKeys()]
         do{
             if let contact = try store.unifiedContact(withIdentifier: identifier, keysToFetch: keys).mutableCopy() as? CNMutableContact{
-                let contactViewController = CNContactViewController(forNewContact: contact)
+                let contactViewController = CNContactViewController(for: contact)
                 contactViewController.allowsEditing = false
                 contactViewController.allowsActions = false
                 let navigationController = UINavigationController(rootViewController: contactViewController)
