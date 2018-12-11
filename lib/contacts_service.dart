@@ -35,6 +35,7 @@ class Contact {
       this.familyName,
       this.company,
       this.jobTitle,
+      this.birthday,
       this.emails,
       this.phones,
       this.postalAddresses,
@@ -48,7 +49,8 @@ class Contact {
       suffix,
       familyName,
       company,
-      jobTitle;
+      jobTitle,
+      birthday;
   Iterable<Item> emails = [];
   Iterable<Item> phones = [];
   Iterable<PostalAddress> postalAddresses = [];
@@ -64,6 +66,7 @@ class Contact {
     suffix = m["suffix"];
     company = m["company"];
     jobTitle = m["jobTitle"];
+    birthday = m["birthday"];
     emails = (m["emails"] as Iterable)?.map((m) => Item.fromMap(m));
     phones = (m["phones"] as Iterable)?.map((m) => Item.fromMap(m));
     postalAddresses = (m["postalAddresses"] as Iterable)
@@ -94,6 +97,7 @@ class Contact {
       "suffix": contact.suffix,
       "company": contact.company,
       "jobTitle": contact.jobTitle,
+      "birthday": contact.birthday,
       "emails": emails,
       "phones": phones,
       "postalAddresses": postalAddresses,
@@ -110,6 +114,7 @@ class PostalAddress {
       this.postcode,
       this.region,
       this.country});
+
   String label, street, city, postcode, region, country;
 
   PostalAddress.fromMap(Map m) {
@@ -135,6 +140,7 @@ class PostalAddress {
 /// a [value], such as emails and phone numbers
 class Item {
   Item({this.label, this.value});
+
   String label, value;
 
   Item.fromMap(Map m) {

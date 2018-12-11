@@ -111,6 +111,7 @@ public class ContactsServicePlugin implements MethodCallHandler {
                     StructuredPostal.REGION,
                     StructuredPostal.POSTCODE,
                     StructuredPostal.COUNTRY,
+                    CommonDataKinds.Event.START_DATE
             };
 
 
@@ -149,8 +150,8 @@ public class ContactsServicePlugin implements MethodCallHandler {
     }
 
     private Cursor getCursor(String query) {
-        String selection = ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=?";
-        String[] selectionArgs = new String[]{Email.CONTENT_ITEM_TYPE, Phone.CONTENT_ITEM_TYPE, StructuredName.CONTENT_ITEM_TYPE, Organization.CONTENT_ITEM_TYPE, StructuredPostal.CONTENT_ITEM_TYPE};
+        String selection = ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=? OR "+ ContactsContract.Data.MIMETYPE + "=?";
+        String[] selectionArgs = new String[]{Email.CONTENT_ITEM_TYPE, Phone.CONTENT_ITEM_TYPE, StructuredName.CONTENT_ITEM_TYPE, Organization.CONTENT_ITEM_TYPE, StructuredPostal.CONTENT_ITEM_TYPE, CommonDataKinds.Event.CONTENT_ITEM_TYPE};
         if (query != null) {
             selectionArgs = new String[]{"%" + query + "%"};
             selection = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " LIKE ?";
@@ -212,9 +213,15 @@ public class ContactsServicePlugin implements MethodCallHandler {
             else if (mimeType.equals(StructuredPostal.CONTENT_ITEM_TYPE)) {
                 contact.postalAddresses.add(new PostalAddress(cursor));
             }
+            //EVENT
+            else if (mimeType.equals(CommonDataKinds.Event.CONTENT_ITEM_TYPE)) {
+                contact.birthday = cursor.getString(cursor.getColumnIndex(CommonDataKinds.Event.START_DATE));
+            }
         }
         return new ArrayList<>(map.values());
     }
+
+
 
     private void setAvatarDataForContactIfAvailable(Contact contact) {
         Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Integer.parseInt(contact.identifier));

@@ -5,6 +5,12 @@ import ContactsUI
 
 @available(iOS 9.0, *)
 public class SwiftContactsServicePlugin: NSObject, FlutterPlugin {
+    let dateFormat = DateFormatter()
+
+    public override init() {
+        dateFormat.dateFormat = "yyyy-MM-dd"
+    }
+    
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "github.com/clovisnicolas/flutter_contacts", binaryMessenger: registrar.messenger())
         let instance = SwiftContactsServicePlugin()
@@ -59,7 +65,8 @@ public class SwiftContactsServicePlugin: NSObject, FlutterPlugin {
                     CNContactPostalAddressesKey,
                     CNContactOrganizationNameKey,
                     CNContactThumbnailImageDataKey,
-                    CNContactJobTitleKey] as [Any]
+                    CNContactJobTitleKey,
+                    CNContactBirthdayKey] as [Any]
         let fetchRequest = CNContactFetchRequest(keysToFetch: keys as! [CNKeyDescriptor])
         // Set the predicate if there is a query
         if let query = query{
@@ -124,11 +131,15 @@ public class SwiftContactsServicePlugin: NSObject, FlutterPlugin {
         let keys: [CNKeyDescriptor] = [CNContactIdentifierKey as NSString, CNContactGivenNameKey as NSString, CNContactFamilyNameKey as NSString, CNContactPhoneNumbersKey as NSString, CNContactImageDataAvailableKey as NSString, CNContactImageDataKey as NSString, CNContactViewController.descriptorForRequiredKeys()]
         do{
             if let contact = try store.unifiedContact(withIdentifier: identifier, keysToFetch: keys).mutableCopy() as? CNMutableContact{
-                let contactViewController = CNContactViewController(for: contact)
-                contactViewController.allowsEditing = false
-                contactViewController.allowsActions = false
+                 let contactViewController = CNContactViewController(for: contact)
                 let navigationController = UINavigationController(rootViewController: contactViewController)
+               
+                contactViewController.allowsEditing = false
+                contactViewController.allowsActions = true
+                contactViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: nil)
 
+                
+                
                 UIApplication.shared.keyWindow?.rootViewController?.present(navigationController, animated: false, completion: nil)
             }
         }
@@ -138,8 +149,9 @@ public class SwiftContactsServicePlugin: NSObject, FlutterPlugin {
         }
         return true;
         
-       
     }
+   
+  
     
     func dictionaryToContact(dictionary : [String:Any]) -> CNMutableContact{
         let contact = CNMutableContact()
@@ -152,6 +164,11 @@ public class SwiftContactsServicePlugin: NSObject, FlutterPlugin {
         contact.nameSuffix = dictionary["suffix"] as? String ?? ""
         contact.organizationName = dictionary["company"] as? String ?? ""
         contact.jobTitle = dictionary["jobTitle"] as? String ?? ""
+        
+        if let birthDateDate = dateFormat.date(from: dictionary["birthday"] as? String ?? "") {
+            contact.birthday = Calendar.current.dateComponents([.day,.month,.year], from: birthDateDate)
+        }
+        
         if let avatarData = (dictionary["avatar"] as? FlutterStandardTypedData)?.data {
             contact.imageData = avatarData
         }
@@ -202,6 +219,11 @@ public class SwiftContactsServicePlugin: NSObject, FlutterPlugin {
         result["suffix"] = contact.nameSuffix
         result["company"] = contact.organizationName
         result["jobTitle"] = contact.jobTitle
+        
+        if let bithday = contact.birthday {
+            result["birthday"] = dateFormat.string(from: bithday.date!)
+        }
+       
         if let avatarData = contact.thumbnailImageData {
             result["avatar"] = FlutterStandardTypedData(bytes: avatarData)
         }
