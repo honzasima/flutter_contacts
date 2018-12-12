@@ -131,15 +131,13 @@ public class SwiftContactsServicePlugin: NSObject, FlutterPlugin {
         let keys: [CNKeyDescriptor] = [CNContactIdentifierKey as NSString, CNContactGivenNameKey as NSString, CNContactFamilyNameKey as NSString, CNContactPhoneNumbersKey as NSString, CNContactImageDataAvailableKey as NSString, CNContactImageDataKey as NSString, CNContactViewController.descriptorForRequiredKeys()]
         do{
             if let contact = try store.unifiedContact(withIdentifier: identifier, keysToFetch: keys).mutableCopy() as? CNMutableContact{
-                 let contactViewController = CNContactViewController(for: contact)
+                let contactViewController = CNContactViewController(for: contact)
                 let navigationController = UINavigationController(rootViewController: contactViewController)
-               
+                
                 contactViewController.allowsEditing = false
                 contactViewController.allowsActions = true
-                contactViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: nil)
+                contactViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(goBack))
 
-                
-                
                 UIApplication.shared.keyWindow?.rootViewController?.present(navigationController, animated: false, completion: nil)
             }
         }
@@ -151,6 +149,9 @@ public class SwiftContactsServicePlugin: NSObject, FlutterPlugin {
         
     }
    
+    @objc private func goBack(sender: UIBarButtonItem) {
+        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: false) { }
+    }
   
     
     func dictionaryToContact(dictionary : [String:Any]) -> CNMutableContact{
