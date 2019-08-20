@@ -13,7 +13,7 @@ class Contact {
     }
 
     String identifier;
-    String displayName, givenName, middleName, familyName, prefix, suffix, company, jobTitle, birthday;
+    String displayName, givenName, middleName, familyName, prefix, suffix, company, jobTitle, birthday, note;
     ArrayList<Item> emails = new ArrayList<>();
     ArrayList<Item> phones = new ArrayList<>();
     ArrayList<PostalAddress> postalAddresses = new ArrayList<>();
@@ -28,10 +28,11 @@ class Contact {
         contactMap.put("familyName", familyName);
         contactMap.put("prefix", prefix);
         contactMap.put("suffix", suffix);
-        contactMap.put("company", company);
-        contactMap.put("jobTitle", jobTitle);
-        contactMap.put("avatar", avatar);
+        contactMap.put("company",company);
+        contactMap.put("jobTitle",jobTitle);
+        contactMap.put("avatar",avatar);
         contactMap.put("birthday", birthday);
+        contactMap.put("note", note);
 
         ArrayList<HashMap<String, String>> emailsMap = new ArrayList<>();
         for (Item email : emails) {
@@ -47,7 +48,7 @@ class Contact {
 
         ArrayList<HashMap<String, String>> addressesMap = new ArrayList<>();
         for (PostalAddress address : postalAddresses) {
-            addressesMap.add(address.map);
+            addressesMap.add(address.toMap());
         }
         contactMap.put("postalAddresses", addressesMap);
 
@@ -67,6 +68,7 @@ class Contact {
         contact.jobTitle = (String) map.get("jobTitle");
         contact.birthday = (String) map.get("birthday");
         contact.avatar = (byte[]) map.get("avatar");
+        contact.note = (String) map.get("note");
 
         ArrayList<HashMap> emails = (ArrayList<HashMap>) map.get("emails");
         if (emails != null) {

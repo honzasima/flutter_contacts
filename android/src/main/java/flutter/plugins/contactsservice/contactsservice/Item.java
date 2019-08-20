@@ -33,12 +33,22 @@ class Item {
 
     static String getPhoneLabel(int type) {
         switch (type) {
-            case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
+            case CommonDataKinds.Phone.TYPE_HOME:
                 return "home";
-            case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
+            case CommonDataKinds.Phone.TYPE_WORK:
                 return "work";
-            case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
+            case CommonDataKinds.Phone.TYPE_MOBILE:
                 return "mobile";
+            case CommonDataKinds.Phone.TYPE_FAX_WORK:
+                return "fax work";
+            case CommonDataKinds.Phone.TYPE_FAX_HOME:
+                return "fax home";
+            case CommonDataKinds.Phone.TYPE_MAIN:
+                return "main";
+            case CommonDataKinds.Phone.TYPE_COMPANY_MAIN:
+                return "company";
+            case CommonDataKinds.Phone.TYPE_PAGER:
+                return "pager";
             default:
                 return "other";
         }
@@ -70,8 +80,19 @@ class Item {
                     return CommonDataKinds.Phone.TYPE_WORK;
                 case "mobile":
                     return CommonDataKinds.Phone.TYPE_MOBILE;
-                default:
-                    return CommonDataKinds.Phone.TYPE_OTHER;
+                case "fax work":
+                    return CommonDataKinds.Phone.TYPE_FAX_WORK;
+                case "fax home":
+                    return CommonDataKinds.Phone.TYPE_FAX_HOME;
+                case "main":
+                    return CommonDataKinds.Phone.TYPE_MAIN;
+                case "company":
+                    return CommonDataKinds.Phone.TYPE_COMPANY_MAIN;
+                case "pager":
+                    return CommonDataKinds.Phone.TYPE_PAGER;
+                case "other":
+                    return CommonDataKinds.Phone.TYPE_OTHER;default:
+                    return CommonDataKinds.Phone.TYPE_CUSTOM;
             }
         }
         return CommonDataKinds.Phone.TYPE_OTHER;
