@@ -129,8 +129,7 @@ public class ContactsServicePlugin implements MethodCallHandler {
                     StructuredPostal.CITY,
                     StructuredPostal.REGION,
                     StructuredPostal.POSTCODE,
-                    StructuredPostal.COUNTRY,
-                    CommonDataKinds.Event.START_DATE
+                    StructuredPostal.COUNTRY
             };
 
 
@@ -172,6 +171,11 @@ public class ContactsServicePlugin implements MethodCallHandler {
 //              setAvatarDataForContactIfAvailable(c);
                 }
             }
+            // load birthday
+            for (Contact c : contacts) {
+                loadBirthday(c);
+            }
+
             //Transform the list of contacts to a list of Map
             ArrayList<HashMap> contactMaps = new ArrayList<>();
             for (Contact c : contacts) {
@@ -187,7 +191,7 @@ public class ContactsServicePlugin implements MethodCallHandler {
     }
 
     private Cursor getCursor(String query) {
-        String selection = ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=?";
+        String selection = ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=? OR " + ContactsContract.Data.MIMETYPE + "=?" ;
         String[] selectionArgs = new String[]{
                 CommonDataKinds.Note.CONTENT_ITEM_TYPE,
                 Email.CONTENT_ITEM_TYPE,
@@ -246,6 +250,8 @@ public class ContactsServicePlugin implements MethodCallHandler {
             Contact contact = map.get(contactId);
 
             String mimeType = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE));
+            String eventMimeType = cursor.getString(cursor.getColumnIndex(CommonDataKinds.Event.MIMETYPE));
+            int eventType = cursor.getInt(cursor.getColumnIndex(CommonDataKinds.Event.TYPE));
             contact.displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 
             //NAMES
@@ -284,10 +290,6 @@ public class ContactsServicePlugin implements MethodCallHandler {
             //ADDRESSES
             else if (mimeType.equals(CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE)) {
                 contact.postalAddresses.add(new PostalAddress(cursor));
-            }
-            //EVENT
-            else if (mimeType.equals(CommonDataKinds.Event.CONTENT_ITEM_TYPE)) {
-                contact.birthday = cursor.getString(cursor.getColumnIndex(CommonDataKinds.Event.START_DATE));
             }
         }
 
@@ -332,6 +334,35 @@ public class ContactsServicePlugin implements MethodCallHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadBirthday(Contact contact){
+
+        String columns[] = {
+                ContactsContract.CommonDataKinds.Event.START_DATE,
+                ContactsContract.CommonDataKinds.Event.TYPE,
+                ContactsContract.CommonDataKinds.Event.MIMETYPE,
+        };
+
+        String where = CommonDataKinds.Event.TYPE + "=? and "
+                + CommonDataKinds.Event.MIMETYPE + "=? and "
+                + ContactsContract.Data.CONTACT_ID + "=? ";
+
+        String[] selectionArgs = {
+                ""+CommonDataKinds.Event.TYPE_BIRTHDAY,
+                CommonDataKinds.Event.CONTENT_ITEM_TYPE,
+                contact.identifier
+        };
+        String sortOrder = ContactsContract.Contacts.DISPLAY_NAME;
+
+        Cursor birthdayCur = contentResolver.query(ContactsContract.Data.CONTENT_URI, columns, where, selectionArgs, sortOrder);
+        if (birthdayCur.getCount() > 0) {
+            while (birthdayCur.moveToNext()) {
+                contact.birthday = birthdayCur.getString(birthdayCur.getColumnIndex(ContactsContract.CommonDataKinds.Event.START_DATE));
+            }
+        }
+        birthdayCur.close();
+
     }
 
     private boolean addContact(Contact contact) {
