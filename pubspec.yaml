@@ -8,12 +8,12 @@ homepage: https://github.com/fluttercommunity/flutter_contacts
 maintainer: Lukas Dickie (@lukasgit)
 
 environment:
-  sdk: ">=2.0.0-dev.58.0.flutter-f981f09760 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  collection: ^1.14.11
+  collection: ^1.18.0
   quiver: '>=2.0.0 <3.0.0'
 
 flutter:

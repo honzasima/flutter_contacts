@@ -6,23 +6,23 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - contacts_service (from `/Users/markoperutovic/AndroidStudioProjects/flutter_contacts/ios`)
-  - Flutter (from `/Users/markoperutovic/development/flutter/bin/cache/artifacts/engine/ios`)
-  - permission_handler (from `/Users/markoperutovic/development/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler-2.2.0/ios`)
+  - contacts_service (from `/Users/shorny/data/workspace/personal/flutter/svatky/repo/flutter_contacts/ios`)
+  - Flutter (from `/Users/shorny/sdk/flutter/bin/cache/artifacts/engine/ios`)
+  - permission_handler (from `/Users/shorny/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler-2.2.0/ios`)
 
 EXTERNAL SOURCES:
   contacts_service:
-    :path: "/Users/markoperutovic/AndroidStudioProjects/flutter_contacts/ios"
+    :path: "/Users/shorny/data/workspace/personal/flutter/svatky/repo/flutter_contacts/ios"
   Flutter:
-    :path: "/Users/markoperutovic/development/flutter/bin/cache/artifacts/engine/ios"
+    :path: "/Users/shorny/sdk/flutter/bin/cache/artifacts/engine/ios"
   permission_handler:
-    :path: "/Users/markoperutovic/development/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler-2.2.0/ios"
+    :path: "/Users/shorny/sdk/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler-2.2.0/ios"
 
 SPEC CHECKSUMS:
-  contacts_service: 8b4231a6c81d4a3d1be440105f113158111ff2ff
-  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
-  permission_handler: 0b2a5acb642be1ad2406adc31d0cda567b8b01e2
+  contacts_service: 64ebf2a313b34bff0acf668efac52ae402ba9be0
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  permission_handler: 0fc6d6641c09e4bfd5541dd39b0f44c7e369aa6b
 
 PODFILE CHECKSUM: b3f98f39b16cc0a18e5ea9ecbe5cfbc88c2ad26a
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.8.3
